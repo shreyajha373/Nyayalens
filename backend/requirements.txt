@@ -1,0 +1,11 @@
+fastapi[standard]
+python-multipart
+PyMuPDF>=1.24.0,<2
+pymongo
+python-dotenv
+pwdlib[argon2]
+email-validator
+Authlib>=1.7.0,<2
+httpx>=0.27,<1
+itsdangerous>=2.2,<3
+google-cloud-translate>=3.28.0,<4

@@ -1,0 +1,31 @@
+# Local credentials and environment files. Keep examples tracked.
+.env
+.env.*
+!.env.example
+backend/.env
+backend/.env.*
+!backend/.env.example
+frontend/.env
+frontend/.env.*
+!frontend/.env.example
+
+# Python environments and generated files
+venv/
+venv*/
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Frontend dependencies and build output
+node_modules/
+frontend/node_modules/
+frontend/dist/
+dist/
+build/
+
+# Local backups and editor metadata
+backup folder/
+.vscode/
+.idea/
+*.log
