@@ -392,7 +392,7 @@ function App() {
               clauseCount={totals.clauses}
               onAnalyze={beginAnalysis}
               onViewHistory={() => setCurrentPage("history")}
-              onOpenHistoryItem={(item) => { setResult(item.result); setCurrentPage("results"); }}
+              onOpenHistoryItem={openHistoryItem}
             />
           )}
 
@@ -442,7 +442,6 @@ function PageHeading({ eyebrow, title, description, action }) {
 }
 
 function Dashboard({ displayName, history, flaggedCount, clauseCount, onAnalyze, onViewHistory, onOpenHistoryItem }) {
-  const latest = history[0];
   return (
     <>
       <PageHeading
@@ -479,15 +478,25 @@ function Dashboard({ displayName, history, flaggedCount, clauseCount, onAnalyze,
         </article>
 
         <article className="panel activity-panel">
-          <div className="panel-heading"><div><div className="eyebrow">RECENT ACTIVITY</div><h2>Latest reviews</h2></div><button className="text-button" onClick={onViewHistory}>View history <Icon name="arrow" size={15} /></button></div>
-          {latest ? (
-            <button className="activity-row" onClick={() => onOpenHistoryItem(latest)}>
-              <span className="activity-file"><Icon name="file" size={18} /></span>
-              <span className="activity-details"><strong>{latest.filename}</strong><small>{formatDate(latest.analyzedAt)}</small></span>
-              <span className="activity-count">{latest.result?.clause_count ?? latest.result?.clauses?.length ?? 0} sections</span>
-            </button>
+          <div className="panel-heading"><div><div className="eyebrow">YOUR DOCUMENTS</div><h2>Previous records</h2></div><button className="text-button" onClick={onViewHistory}>View all <Icon name="arrow" size={15} /></button></div>
+          {history.length ? (
+            <div className="activity-list">
+              {history.slice(0, 5).map((item, index) => (
+                <button
+                  className="activity-row"
+                  key={`${item.analysisId || item.analyzedAt || item.filename}-${index}`}
+                  onClick={() => onOpenHistoryItem(item)}
+                  aria-label={`Open saved analysis for ${item.filename}`}
+                >
+                  <span className="activity-file"><Icon name="file" size={18} /></span>
+                  <span className="activity-details"><strong>{item.filename}</strong><small>{formatDate(item.analyzedAt)}</small></span>
+                  <span className="activity-count">{item.result?.clause_count ?? item.result?.clauses?.length ?? 0} sections</span>
+                  <span className="activity-open"><Icon name="arrow" size={15} /></span>
+                </button>
+              ))}
+            </div>
           ) : (
-            <div className="empty-activity"><span className="empty-icon"><Icon name="history" size={20} /></span><strong>No reviews yet</strong><p>Your recent document analyses will appear here.</p></div>
+            <div className="empty-activity"><span className="empty-icon"><Icon name="history" size={20} /></span><strong>No previous records</strong><p>Your saved document analyses will appear here.</p></div>
           )}
         </article>
       </section>
